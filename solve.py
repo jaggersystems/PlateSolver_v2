@@ -1,6 +1,6 @@
 import subprocess
 
-INPUT_FILENAME = "input.jpg"
+INPUT_FILENAME = "images/input.jpg"
 
 """
 Plate solve image
