@@ -24,7 +24,7 @@ TARGET_NAME = "NGC 2950"
 # Val 2 positive = down
 
 
-SOLVED_FILENAME = "input.ini"
+SOLVED_FILENAME = " images/input.ini"
 CURRENT_DATETIME = Time('2021-04-05T22:20:00') - 1 * u.hour
 CURRENT_LONGITUDE = 1.153970
 CURRENT_LATITUDE = 51.313068
