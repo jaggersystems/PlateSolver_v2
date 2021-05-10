@@ -7,15 +7,18 @@
 - Repeat
 """
 
-# import pdb; pdb.set_trace()
-
 import re
+
+from time import time, sleep
 
 from astropy import units as u
 from astropy.coordinates import SkyCoord, EarthLocation, AltAz
 from astropy.time import Time
 
-TARGET_NAME = "NGC 2950"
+from solve import plate_solve
+
+
+TARGET_NAME = "M101"
 # NGC 2976 = (<Angle 1.05851339 deg>, <Angle -0.8701005 deg>)
 # M82 = (<Angle -0.16647478 deg>, <Angle 0.5973768 deg>)
 # NGC 2950 = (<Angle 7.5492307 deg>, <Angle -7.03363531 deg>)
@@ -23,12 +26,18 @@ TARGET_NAME = "NGC 2950"
 # Val 1 positive = left
 # Val 2 positive = down
 
+INPUT_FILENAME = "images\m81.jpg"
+SOLVED_FILENAME = "images\m81.ini"
 
-SOLVED_FILENAME = " images/input.ini"
 CURRENT_DATETIME = Time('2021-04-05T22:20:00') - 1 * u.hour
 CURRENT_LONGITUDE = 1.153970
 CURRENT_LATITUDE = 51.313068
+CURRENT_LATITUDE = 51.313068
 CURRENT_HEIGHT = 20
+
+
+# import pdb; pdb.set_trace()
+
 
 """
 Returns the current Time
@@ -74,7 +83,7 @@ def file_read(fname):
                 key, value = line.rstrip("\n").split("=")
                 input[key] = value
             except:
-                print("Failed to unpack line.")
+                print("Failed to unpack line. Scale was inaccurate or increase down sampling!")
 
     return input
 
@@ -97,6 +106,10 @@ def get_frame_from_file(filename, location):
     return frame_alt_az
 
 def figure_it_out():
+    # while True:
+
+    plate_solve(INPUT_FILENAME)
+
     observation_site_location = get_observation_site_location()
 
     target_frame = get_frame_by_target_name(TARGET_NAME, observation_site_location)
@@ -105,8 +118,22 @@ def figure_it_out():
     alt_diff = file_frame.alt - target_frame.alt
     azimuth_diff = file_frame.az - target_frame.az
 
-    print("Adjust camera Altitude by " + str(alt_diff) + " degrees")
-    print("Adjust camera Azimuth by " + str(azimuth_diff) + " degrees")
+    print("Target Alt: " + str(target_frame.alt))
+    print("Target Az: " + str(target_frame.az))
+    print("File Alt: " + str(file_frame.alt))
+    print("File Az: " + str(file_frame.az) + "\n")
+
+    if (str(alt_diff).startswith("-1")):
+        print("Adjust camera Altitude UP by " + str(alt_diff) + " degrees")
+    else:
+        print("Adjust camera Altitude DOWN by " + str(alt_diff) + " degrees")
+
+    if (str(azimuth_diff).startswith("-1")):
+        print("Adjust camera Azimuth LEFT by " + str(azimuth_diff) + " degrees")
+    else:
+        print("Adjust camera Azimuth RIGHT by " + str(azimuth_diff) + " degrees")
+
+    # sleep(10 - time() % 10)
 
 
 figure_it_out()
