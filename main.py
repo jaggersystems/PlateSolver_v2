@@ -107,8 +107,7 @@ def get_frame_from_file(filename, location):
 
 def figure_it_out():
     # while True:
-
-    plate_solve(INPUT_FILENAME)
+    # plate_solve(INPUT_FILENAME)
 
     observation_site_location = get_observation_site_location()
 
@@ -117,24 +116,29 @@ def figure_it_out():
 
     alt_diff = file_frame.alt - target_frame.alt
     azimuth_diff = file_frame.az - target_frame.az
+    # azimuth_diff = target_frame.az - file_frame.az
 
-    print("Target Alt: " + str(target_frame.alt))
+    if azimuth_diff > 180:
+        new_azimuth_diff = 360 - file_frame.az + target_frame.az
+
+    # print("Target Alt: " + str(target_frame.alt))
     print("Target Az: " + str(target_frame.az))
-    print("File Alt: " + str(file_frame.alt))
+    # print("File Alt: " + str(file_frame.alt))
     print("File Az: " + str(file_frame.az) + "\n")
 
-    if (str(alt_diff).startswith("-1")):
-        print("Adjust camera Altitude UP by " + str(alt_diff) + " degrees")
-    else:
-        print("Adjust camera Altitude DOWN by " + str(alt_diff) + " degrees")
-
-    if (str(azimuth_diff).startswith("-1")):
-        print("Adjust camera Azimuth LEFT by " + str(azimuth_diff) + " degrees")
-    else:
-        print("Adjust camera Azimuth RIGHT by " + str(azimuth_diff) + " degrees")
-
+    # if (str(alt_diff).startswith("-1")):
+    #     print("Adjust camera Altitude UP by " + str(alt_diff) + " degrees")
+    # else:
+    #     print("Adjust camera Altitude DOWN by " + str(alt_diff) + " degrees")
+    #
+    # if (str(azimuth_diff).startswith("-1")):
+    #     print("Adjust camera Azimuth LEFT by " + str(azimuth_diff) + " degrees")
+    # else:
+    #     print("Adjust camera Azimuth RIGHT by " + str(azimuth_diff) + " degrees")
     # sleep(10 - time() % 10)
 
+    print("Alt diff: " + str(alt_diff))
+    print("Az diff: " + str(azimuth_diff))
 
 figure_it_out()
 
