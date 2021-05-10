@@ -83,7 +83,7 @@ def file_read(fname):
                 key, value = line.rstrip("\n").split("=")
                 input[key] = value
             except:
-                print("Failed to unpack line. Scale was inaccurate or increase down sampling!")
+                print("Failed to unpack line. Scale was inaccurate or increase down sampling! \n")
 
     return input
 
@@ -115,30 +115,37 @@ def figure_it_out():
     file_frame = get_frame_from_file(SOLVED_FILENAME, observation_site_location)
 
     alt_diff = file_frame.alt - target_frame.alt
+
     azimuth_diff = file_frame.az - target_frame.az
-    # azimuth_diff = target_frame.az - file_frame.az
 
-    if azimuth_diff > 180:
-        new_azimuth_diff = 360 - file_frame.az + target_frame.az
+    if (azimuth_diff < 0):
+        azimuth_diff = file_frame.az - target_frame.az
+    else:
+        azimuth_diff = target_frame.az - file_frame.az
 
-    # print("Target Alt: " + str(target_frame.alt))
+
+
+    print("Target Alt: " + str(target_frame.alt))
+    print("File Alt: " + str(file_frame.alt))
+    print("Alt diff: " + str(alt_diff) + "\n")
+
     print("Target Az: " + str(target_frame.az))
-    # print("File Alt: " + str(file_frame.alt))
-    print("File Az: " + str(file_frame.az) + "\n")
+    print("File Az: " + str(file_frame.az))
+    print("Az diff: " + str(azimuth_diff) + "\n")
 
-    # if (str(alt_diff).startswith("-1")):
-    #     print("Adjust camera Altitude UP by " + str(alt_diff) + " degrees")
-    # else:
-    #     print("Adjust camera Altitude DOWN by " + str(alt_diff) + " degrees")
-    #
-    # if (str(azimuth_diff).startswith("-1")):
-    #     print("Adjust camera Azimuth LEFT by " + str(azimuth_diff) + " degrees")
-    # else:
-    #     print("Adjust camera Azimuth RIGHT by " + str(azimuth_diff) + " degrees")
-    # sleep(10 - time() % 10)
 
-    print("Alt diff: " + str(alt_diff))
-    print("Az diff: " + str(azimuth_diff))
+    if (alt_diff > 0):
+        print("Adjust camera Altitude UP by " + str(alt_diff) + " degrees")
+    else:
+        print("Adjust camera Altitude DOWN by " + str(alt_diff) + " degrees")
+
+    if (azimuth_diff > 0):
+        print("Adjust camera Azimuth RIGHT by " + str(azimuth_diff) + " degrees")
+    else:
+        print("Adjust camera Azimuth LEFT by " + str(azimuth_diff) + " degrees")
+    sleep(10 - time() % 10)
+
+
 
 figure_it_out()
 
